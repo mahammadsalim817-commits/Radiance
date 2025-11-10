@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sahityotsava</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#667eea">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>Sahityotsava Admin Dashboard</h1>
+      <div class="header-actions">
+        <button onclick="window.print()" class="btn-print">Print Report</button>
+        <button onclick="exportToCSV()" class="btn-export">Export CSV</button>
+      </div>
+    </header>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #10b981;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>Total Registrations</h3>
+          <p class="stat-value"><%= stats.total %></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #3b82f6;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>Total Amount</h3>
+          <p class="stat-value">₹<%= stats.totalAmount %></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #8b5cf6;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>Average Age</h3>
+          <p class="stat-value">
+            <%= registrations.length > 0 
+              ? Math.round(registrations.reduce((sum, r) => sum + r.age, 0) / registrations.length) 
+              : 0 %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Registered Participants</h2>
+        <input type="text" id="searchInput" placeholder="Search by name, unit, or sector..." class="search-input">
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Unit</th>
+              <th>Sector</th>
+              <th>Phone Number</th>
+              <th>Payment ID</th>
+              <th>Amount</th>
+              <th>Registration Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <% registrations.forEach((reg, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= reg.name %></td>
+                <td><%= reg.age %></td>
+                <td><%= reg.unit %></td>
+                <td><%= reg.sector %></td>
+                <td><%= reg.phoneNumber %></td>
+                <td><span class="payment-id"><%= reg.paymentId %></span></td>
+                <td>₹<%= reg.amount %></td>
+                <td><%= new Date(reg.registeredAt).toLocaleString('en-IN') %></td>
+                <td><span class="status-badge status-<%= reg.paymentStatus %>"><%= reg.paymentStatus %></span></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <% if (registrations.length === 0) { %>
+          <div class="no-data">
+            <p>No registrations found</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('#tableBody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
+    });
+
+    // Safely inject registrations data as JSON
+    // This avoids EJS/JS syntax issues and template parse errors
+    </script>
+    <script type="application/json" id="registrations-data">
+      <%- JSON.stringify(registrations || []) %>
+    </script>
+    <script>
+    // Export to CSV
+    function exportToCSV() {
+      const registrations = JSON.parse(document.getElementById('registrations-data').textContent);
+      let csv = 'Name,Age,Unit,Sector,Phone Number,Payment ID,Amount,Registration Date,Status\n';
+      registrations.forEach(reg => {
+        csv += `"${reg.name}",${reg.age},"${reg.unit}","${reg.sector}","${reg.phoneNumber}","${reg.paymentId}",${reg.amount},"${new Date(reg.registeredAt).toLocaleString('en-IN')}","${reg.paymentStatus}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sahityotsava_registrations_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+    </script>
+  </script>
+</body>
+</html>
+

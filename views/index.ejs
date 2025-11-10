@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahityotsava Registration</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#667eea">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="registration-card">
+      <div class="header">
+        <h1>Sahityotsava Registration</h1>
+        <p class="subtitle">Fill in your details to register</p>
+      </div>
+
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="name">Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age <span class="required">*</span></label>
+          <input type="number" id="age" name="age" required min="1" placeholder="Enter your age">
+        </div>
+
+        <div class="form-group">
+          <label for="unit">Unit <span class="required">*</span></label>
+          <input type="text" id="unit" name="unit" required placeholder="Enter your unit">
+        </div>
+
+        <div class="form-group">
+          <label for="sector">Sector <span class="required">*</span></label>
+          <input type="text" id="sector" name="sector" required placeholder="Enter your sector">
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="Enter your phone number" pattern="[0-9]{10}">
+          <small class="form-text">Please enter a 10-digit phone number</small>
+        </div>
+
+        <div class="payment-info">
+          <div class="amount-box">
+            <span class="amount-label">Registration Fee:</span>
+            <span class="amount-value">₹30</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Proceed to Payment</span>
+          <span class="btn-loader" style="display: none;">Processing...</span>
+        </button>
+      </form>
+
+      <div class="footer-text">
+        <p>Secure payment powered by Razorpay</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
