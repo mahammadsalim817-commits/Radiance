@@ -269,30 +269,204 @@ body {
 
 /* ===== Print Styles ===== */
 @media print {
+  @page {
+    size: A4 landscape;
+    margin: 0.5cm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   body {
     background: white;
+    margin: 0;
+    padding: 0;
   }
 
+  .dashboard-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* Hide unnecessary elements */
   .dashboard-header,
+  .header-actions,
   .search-input,
-  .header-actions {
-    display: none;
+  .filter-select,
+  .header-controls,
+  .btn-print,
+  .btn-export,
+  .btn-approve,
+  .btn-reject,
+  .btn-view-screenshot,
+  .action-buttons {
+    display: none !important;
   }
 
-  .stat-card,
-  .table-container {
+  /* Stats cards */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    page-break-inside: avoid;
+  }
+
+  .stat-card {
     box-shadow: none;
     border: 1px solid #e5e7eb;
-  }
-
-  .data-table {
+    padding: 0.75rem;
     font-size: 0.75rem;
   }
 
-  .data-table th,
-  .data-table td {
-    padding: 0.5rem;
+  .stat-icon {
+    width: 40px;
+    height: 40px;
   }
+
+  .stat-content h3 {
+    font-size: 0.65rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+
+  /* Table container */
+  .table-container {
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+    margin: 0;
+    page-break-inside: auto;
+  }
+
+  .table-header {
+    padding: 0.75rem 1rem;
+    background: white !important;
+    border-bottom: 2px solid #111827;
+  }
+
+  .table-header h2 {
+    font-size: 1.25rem;
+    color: #111827;
+  }
+
+  /* Table styling */
+  .table-wrapper {
+    overflow: visible;
+  }
+
+  .data-table {
+    width: 100%;
+    font-size: 0.65rem;
+    border-collapse: collapse;
+  }
+
+  .data-table thead {
+    background: #1e40af !important;
+  }
+
+  .data-table thead th {
+    background: #1e40af !important;
+    color: white !important;
+    padding: 0.5rem 0.3rem;
+    font-size: 0.65rem;
+    border: 1px solid #1e3a8a;
+    white-space: nowrap;
+  }
+
+  .data-table tbody td {
+    padding: 0.4rem 0.3rem;
+    border: 1px solid #e5e7eb;
+    font-size: 0.65rem;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+
+  .data-table tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Hide screenshot column in print */
+  .data-table th:nth-child(7),
+  .data-table td:nth-child(7) {
+    display: none;
+  }
+
+  /* Hide actions column in print */
+  .data-table th:nth-child(11),
+  .data-table td:nth-child(11) {
+    display: none;
+  }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6rem;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .status-verified {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+  }
+
+  .status-pending {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+  }
+
+  .status-rejected {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+  }
+
+  /* Add print header */
+  .table-header h2:before {
+    content: "Radiance Camp - ";
+    font-weight: 700;
+  }
+
+  /* Page break management */
+  .stats-container {
+    page-break-after: avoid;
+  }
+
+  .table-container {
+    page-break-before: avoid;
+  }
+
+  /* Ensure no content is cut off */
+  .data-table {
+    table-layout: fixed;
+  }
+
+  /* Better column widths for print */
+  .data-table th:nth-child(1),
+  .data-table td:nth-child(1) { width: 3%; } /* # */
+  .data-table th:nth-child(2),
+  .data-table td:nth-child(2) { width: 15%; } /* Name */
+  .data-table th:nth-child(3),
+  .data-table td:nth-child(3) { width: 5%; } /* Age */
+  .data-table th:nth-child(4),
+  .data-table td:nth-child(4) { width: 12%; } /* Unit */
+  .data-table th:nth-child(5),
+  .data-table td:nth-child(5) { width: 12%; } /* Sector */
+  .data-table th:nth-child(6),
+  .data-table td:nth-child(6) { width: 12%; } /* Phone */
+  .data-table th:nth-child(8),
+  .data-table td:nth-child(8) { width: 8%; } /* Amount */
+  .data-table th:nth-child(9),
+  .data-table td:nth-child(9) { width: 10%; } /* Date */
+  .data-table th:nth-child(10),
+  .data-table td:nth-child(10) { width: 10%; } /* Status */
 }
 
 /* ===== Responsive Design ===== */
