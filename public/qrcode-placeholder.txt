@@ -1,0 +1,9 @@
+IMPORTANT: Add your UPI QR code image here!
+
+1. Save your UPI payment QR code as "qrcode.png"
+2. Place it in the /public folder
+3. The image should be clear and scannable
+4. Recommended size: 500x500 pixels or larger
+
+Your UPI ID: ahmadsinan441-1@okhdfcbank
+Amount: ₹30

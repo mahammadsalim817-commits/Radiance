@@ -26,11 +26,11 @@ const registrationSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  paymentId: {
+  transactionId: {
     type: String,
-    required: true
+    trim: true
   },
-  orderId: {
+  paymentScreenshot: {
     type: String,
     required: true
   },
@@ -40,8 +40,14 @@ const registrationSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['pending', 'completed', 'failed'],
-    default: 'completed'
+    enum: ['pending', 'verified', 'rejected'],
+    default: 'pending'
+  },
+  verifiedBy: {
+    type: String
+  },
+  verifiedAt: {
+    type: Date
   },
   registeredAt: {
     type: Date,
