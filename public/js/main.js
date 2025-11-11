@@ -152,17 +152,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Prevent body scroll when dropdown is open
-document.addEventListener('wheel', function(e) {
-  const openDropdown = document.querySelector('.custom-select.open .custom-options');
-  if (openDropdown && !openDropdown.contains(e.target)) {
-    const isScrollable = openDropdown.scrollHeight > openDropdown.clientHeight;
-    if (isScrollable) {
-      e.preventDefault();
-    }
-  }
-}, { passive: false });
-
 // Initialize sector dropdown
 const sectorSelect = document.getElementById('sector');
 const sectorOptions = Array.from(sectorSelect.options).map(opt => ({
@@ -213,103 +202,6 @@ document.getElementById('sector').addEventListener('change', function() {
     customUnit.querySelector('.custom-options').innerHTML = '';
   }
 });
-
-// File upload - no preview, just show filename
-document.getElementById('paymentScreenshot').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  const fileName = document.getElementById('fileName');
-
-  if (file) {
-    fileName.textContent = file.name;
-  } else {
-    fileName.textContent = 'Choose File';
-  }
-});
-
-document.getElementById('registrationForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const phoneNumber = document.getElementById('phoneNumber').value;
-  if (!/^[0-9]{10}$/.test(phoneNumber)) {
-    alert('Please enter a valid 10-digit phone number');
-    return;
-  }
-
-  formData = {
-    name: document.getElementById('name').value.trim(),
-    age: document.getElementById('age').value,
-    unit: document.getElementById('unit').value.trim(),
-    sector: document.getElementById('sector').value.trim(),
-    phoneNumber: phoneNumber
-  };
-
-  document.getElementById('formCard').style.display = 'none';
-  document.getElementById('paymentCard').style.display = 'block';
-  window.scrollTo(0, 0);
-});
-
-document.getElementById('backBtn').addEventListener('click', function() {
-  document.getElementById('paymentCard').style.display = 'none';
-  document.getElementById('formCard').style.display = 'block';
-  window.scrollTo(0, 0);
-});
-
-document.getElementById('transactionForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  const submitBtn = document.getElementById('submitBtn');
-  const fileInput = document.getElementById('paymentScreenshot');
-  const file = fileInput.files[0];
-
-  if (!file) {
-    alert('Please upload a payment screenshot');
-    return;
-  }
-
-  // Validate file type
-  if (!file.type.startsWith('image/')) {
-    alert('Please upload an image file');
-    return;
-  }
-
-  // Validate file size (max 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    alert('File size must be less than 5MB');
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.querySelector('span').textContent = 'Uploading...';
-
-  try {
-    const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('age', formData.age);
-    formDataToSend.append('unit', formData.unit);
-    formDataToSend.append('sector', formData.sector);
-    formDataToSend.append('phoneNumber', formData.phoneNumber);
-    formDataToSend.append('paymentScreenshot', file);
-
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      body: formDataToSend
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      window.location.href = '/success';
-    } else {
-      throw new Error(data.error || 'Registration failed');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert(error.message || 'Something went wrong. Please try again.');
-    submitBtn.disabled = false;
-    submitBtn.querySelector('span').textContent = 'Complete Registration';
-  }
-});
-
 
 // File upload - no preview, just show filename
 document.getElementById('paymentScreenshot').addEventListener('change', function(e) {
