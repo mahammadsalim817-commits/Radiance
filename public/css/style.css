@@ -131,7 +131,7 @@ body {
 
 .header h1 {
   font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
+  font-size: 5rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
   letter-spacing: 0.15em;
@@ -855,8 +855,43 @@ select {
 .custom-option.selected:hover {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
 }
+.custom-options {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  border: 2px solid var(--primary-blue);
+  border-radius: var(--border-radius);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+  display: none;
+  transition: none;
+}
 
 /* Better Scrollbar Design */
+.custom-select.open-up .custom-options {
+  top: auto;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .custom-options::-webkit-scrollbar {
   width: 6px;
 }
