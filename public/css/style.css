@@ -774,13 +774,6 @@ select {
   box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
 }
 
-.custom-select.open .custom-select-trigger {
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .custom-select-trigger .arrow {
   width: 18px;
   height: 18px;
@@ -795,13 +788,13 @@ select {
 
 .custom-options {
   position: absolute;
-  top: calc(100% + 4px);
+  bottom: calc(100% + 4px);
   left: 0;
   right: 0;
   background-color: var(--white);
   border: 2px solid var(--primary-blue);
   border-radius: var(--border-radius);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
   max-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -811,18 +804,27 @@ select {
 
 .custom-select.open .custom-options {
   display: block;
-  animation: slideDown 0.2s ease;
+  animation: slideUp 0.2s ease;
 }
 
-@keyframes slideDown {
+@keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.custom-select.open .custom-select-trigger {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .custom-option {
