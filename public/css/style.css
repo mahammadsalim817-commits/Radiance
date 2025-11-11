@@ -881,3 +881,15 @@ select {
 select::-webkit-scrollbar-thumb:hover {
   background: var(--primary-dark);
 }
+
+/* ===== Powered By Text ===== */
+.powered-by {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gray-600);
+  opacity: 0.6;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+}
