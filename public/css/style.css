@@ -131,7 +131,7 @@ body {
 
 .header h1 {
   font-family: 'Cinzel', serif;
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
   letter-spacing: 0.15em;
@@ -342,6 +342,80 @@ small {
   width: 18px;
   height: 18px;
   color: var(--primary-blue);
+}
+
+/* ===== UPI App Buttons ===== */
+.upi-apps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.upi-app-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  min-width: 80px;
+}
+
+.upi-app-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.upi-app-btn:active {
+  transform: translateY(-1px);
+}
+
+.upi-app-btn svg {
+  width: 48px;
+  height: 48px;
+}
+
+.upi-app-btn span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+/* PhonePe specific */
+.upi-app-btn.phonepe:hover {
+  border-color: #5F259F;
+  background: #f8f5fb;
+}
+
+.upi-app-btn.phonepe span {
+  color: #5F259F;
+}
+
+/* Google Pay specific */
+.upi-app-btn.gpay:hover {
+  border-color: #4285F4;
+  background: #f5f8ff;
+}
+
+.upi-app-btn.gpay span {
+  color: #4285F4;
+}
+
+/* Paytm specific */
+.upi-app-btn.paytm:hover {
+  border-color: #00BAF2;
+  background: #f0f9fd;
+}
+
+.upi-app-btn.paytm span {
+  color: #00BAF2;
 }
 
 /* ===== Payment Details ===== */
@@ -855,43 +929,8 @@ select {
 .custom-option.selected:hover {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
 }
-.custom-options {
-  position: absolute;
-  bottom: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  background-color: var(--white);
-  border: 2px solid var(--primary-blue);
-  border-radius: var(--border-radius);
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
-  max-height: 200px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 1000;
-  display: none;
-  transition: none;
-}
 
 /* Better Scrollbar Design */
-.custom-select.open-up .custom-options {
-  top: auto;
-  bottom: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  animation: slideDown 0.2s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 .custom-options::-webkit-scrollbar {
   width: 6px;
 }
