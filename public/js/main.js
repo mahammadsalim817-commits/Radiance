@@ -179,8 +179,13 @@ document.getElementById('sector').addEventListener('change', function() {
     unitTrigger.classList.remove('disabled');
     unitTrigger.querySelector('span').textContent = 'Select Unit';
     
+    // Sort units alphabetically
+    const sortedUnits = [...sectorUnits[sector]].sort((a, b) => {
+      return a.localeCompare(b, 'kn'); // Use Kannada locale for proper sorting
+    });
+    
     // Add units for selected sector
-    sectorUnits[sector].forEach(unit => {
+    sortedUnits.forEach(unit => {
       const option = document.createElement('option');
       option.value = unit;
       option.textContent = unit;
