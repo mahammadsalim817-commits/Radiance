@@ -790,8 +790,9 @@ select {
   border: 2px solid var(--primary-blue);
   border-radius: var(--border-radius);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  max-height: 240px;
+  max-height: 200px;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1000;
   display: none;
 }
@@ -813,20 +814,21 @@ select {
 }
 
 .custom-option {
-  padding: 0.875rem 1rem;
-  font-size: 0.9375rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
   color: var(--gray-900);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
   border-left: 4px solid transparent;
   background-color: var(--white);
+  line-height: 1.4;
 }
 
 .custom-option:hover {
   background: linear-gradient(90deg, #eff6ff 0%, #ffffff 100%);
   border-left-color: var(--primary-blue);
-  padding-left: 1.25rem;
+  padding-left: 1rem;
 }
 
 .custom-option.selected {
