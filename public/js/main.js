@@ -8,44 +8,17 @@ const UPI_CONFIG = {
   transactionNote: 'Radiance Camp Registration'
 };
 
-// Function to handle UPI payments
+// Function to handle UPI payments - Without amount to avoid risk policy
 function payViaUPI(app) {
-  const { upiId, payeeName, amount, transactionNote } = UPI_CONFIG;
+  const { upiId, payeeName, transactionNote } = UPI_CONFIG;
   
   // Encode parameters for URL
   const encodedName = encodeURIComponent(payeeName);
   const encodedNote = encodeURIComponent(transactionNote);
   
-  let upiUrl = '';
-  
-  // Build UPI intent URL based on app
-  switch(app) {
-    case 'phonepe':
-      // PhonePe intent URL
-      upiUrl = `phonepe://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
-      break;
-      
-    case 'gpay':
-      // Google Pay intent URL
-      upiUrl = `gpay://upi/pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
-      // Fallback to tez:// for older Google Pay versions
-      const fallbackUrl = `tez://upi/pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
-      
-      // Try gpay:// first, then fallback to tez://
-      setTimeout(() => {
-        window.location.href = fallbackUrl;
-      }, 500);
-      break;
-      
-    case 'paytm':
-      // Paytm intent URL
-      upiUrl = `paytmmp://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
-      break;
-      
-    default:
-      // Generic UPI intent URL (works with most UPI apps)
-      upiUrl = `upi://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
-  }
+  // Use standard UPI intent WITHOUT amount parameter to avoid risk policy blocks
+  // Amount will need to be entered manually by the user
+  let upiUrl = `upi://pay?pa=${upiId}&pn=${encodedName}&tn=${encodedNote}&cu=INR`;
   
   // Create a temporary link and click it
   const link = document.createElement('a');
@@ -55,35 +28,10 @@ function payViaUPI(app) {
   
   try {
     link.click();
-    
-    // Show user instruction
-    setTimeout(() => {
-      showPaymentInstructions(app);
-    }, 1000);
   } catch (error) {
     console.error('Error opening UPI app:', error);
-    showPaymentError(app);
   } finally {
     document.body.removeChild(link);
-  }
-}
-
-// Show payment instructions to user
-function showPaymentInstructions(app) {
-  const appNames = {
-    'phonepe': 'PhonePe',
-    'gpay': 'Google Pay',
-    'paytm': 'Paytm'
-  };
-  
-  const appName = appNames[app] || 'UPI app';
-  
-  // Check if the app opened (user left the page)
-  const hidden = document.hidden || document.webkitHidden || document.mozHidden;
-  
-  if (!hidden) {
-    // App didn't open, show alternative instructions
-    alert(`Unable to open ${appName} automatically.\n\nPlease:\n1. Open your ${appName} app manually\n2. Select "Pay by UPI ID"\n3. Enter: ${UPI_CONFIG.upiId}\n4. Amount: ₹${UPI_CONFIG.amount}\n5. Complete payment and upload screenshot below`);
   }
 }
 

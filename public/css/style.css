@@ -308,6 +308,40 @@ small {
   padding: 2rem;
 }
 
+/* Warning Banner */
+.warning-banner {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border: 2px solid #F59E0B;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.1);
+}
+
+.warning-banner svg {
+  color: #D97706;
+  margin-top: 2px;
+}
+
+.warning-banner strong {
+  color: #92400E;
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.warning-banner p {
+  color: #78350F;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ===== QR Code Section ===== */
+
 .qr-wrapper {
   text-align: center;
   margin-bottom: 2rem;
