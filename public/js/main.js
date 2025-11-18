@@ -1,5 +1,158 @@
 let formData = {};
 
+// UPI Payment Configuration
+const UPI_CONFIG = {
+  upiId: '9746294802@ybl',
+  payeeName: 'MOHAMMAD SALIM',
+  amount: '30',
+  transactionNote: 'Radiance Camp Registration'
+};
+
+// Function to handle UPI payments
+function payViaUPI(app) {
+  const { upiId, payeeName, amount, transactionNote } = UPI_CONFIG;
+  
+  // Encode parameters for URL
+  const encodedName = encodeURIComponent(payeeName);
+  const encodedNote = encodeURIComponent(transactionNote);
+  
+  let upiUrl = '';
+  
+  // Build UPI intent URL based on app
+  switch(app) {
+    case 'phonepe':
+      // PhonePe intent URL
+      upiUrl = `phonepe://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
+      break;
+      
+    case 'gpay':
+      // Google Pay intent URL
+      upiUrl = `gpay://upi/pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
+      // Fallback to tez:// for older Google Pay versions
+      const fallbackUrl = `tez://upi/pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
+      
+      // Try gpay:// first, then fallback to tez://
+      setTimeout(() => {
+        window.location.href = fallbackUrl;
+      }, 500);
+      break;
+      
+    case 'paytm':
+      // Paytm intent URL
+      upiUrl = `paytmmp://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
+      break;
+      
+    default:
+      // Generic UPI intent URL (works with most UPI apps)
+      upiUrl = `upi://pay?pa=${upiId}&pn=${encodedName}&am=${amount}&tn=${encodedNote}&cu=INR`;
+  }
+  
+  // Create a temporary link and click it
+  const link = document.createElement('a');
+  link.href = upiUrl;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  
+  try {
+    link.click();
+    
+    // Show user instruction
+    setTimeout(() => {
+      showPaymentInstructions(app);
+    }, 1000);
+  } catch (error) {
+    console.error('Error opening UPI app:', error);
+    showPaymentError(app);
+  } finally {
+    document.body.removeChild(link);
+  }
+}
+
+// Show payment instructions to user
+function showPaymentInstructions(app) {
+  const appNames = {
+    'phonepe': 'PhonePe',
+    'gpay': 'Google Pay',
+    'paytm': 'Paytm'
+  };
+  
+  const appName = appNames[app] || 'UPI app';
+  
+  // Check if the app opened (user left the page)
+  const hidden = document.hidden || document.webkitHidden || document.mozHidden;
+  
+  if (!hidden) {
+    // App didn't open, show alternative instructions
+    alert(`Unable to open ${appName} automatically.\n\nPlease:\n1. Open your ${appName} app manually\n2. Select "Pay by UPI ID"\n3. Enter: ${UPI_CONFIG.upiId}\n4. Amount: ₹${UPI_CONFIG.amount}\n5. Complete payment and upload screenshot below`);
+  }
+}
+
+// Show payment error
+function showPaymentError(app) {
+  const appNames = {
+    'phonepe': 'PhonePe',
+    'gpay': 'Google Pay',
+    'paytm': 'Paytm'
+  };
+  
+  const appName = appNames[app] || 'UPI app';
+  
+  alert(`Could not open ${appName}.\n\nAlternative methods:\n1. Scan the QR code above with any UPI app\n2. Or manually pay to UPI ID: ${UPI_CONFIG.upiId}\n3. Amount: ₹${UPI_CONFIG.amount}\n4. Upload payment screenshot below`);
+}
+
+// Copy UPI ID to clipboard
+function copyUpiId() {
+  const upiId = UPI_CONFIG.upiId;
+  const copyBtnText = document.getElementById('copyBtnText');
+  
+  // Modern clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(upiId)
+      .then(() => {
+        copyBtnText.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtnText.textContent = 'Copy UPI ID';
+        }, 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy:', err);
+        fallbackCopy(upiId);
+      });
+  } else {
+    // Fallback for older browsers
+    fallbackCopy(upiId);
+  }
+}
+
+// Fallback copy method for older browsers
+function fallbackCopy(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.opacity = '0';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      const copyBtnText = document.getElementById('copyBtnText');
+      copyBtnText.textContent = 'Copied!';
+      setTimeout(() => {
+        copyBtnText.textContent = 'Copy UPI ID';
+      }, 2000);
+    }
+  } catch (err) {
+    console.error('Fallback copy failed:', err);
+    alert('Failed to copy. Please copy manually: ' + text);
+  }
+  
+  document.body.removeChild(textArea);
+}
+
 // Sector-Unit mapping
 const sectorUnits = {
   'ಪುತ್ತೂರು ಸೆಕ್ಟರ್': [
