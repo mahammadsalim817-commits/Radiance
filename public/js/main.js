@@ -2,8 +2,8 @@ let formData = {};
 
 // UPI Payment Configuration
 const UPI_CONFIG = {
-  upiId: '94488 47963@ybl',
-  payeeName: 'MOHAMMAD SALIM',
+  upiId: 'ahmadsinan441-1@okhdfcbank',
+  payeeName: 'Ahmad Sinan',
   amount: '30',
   transactionNote: 'Radiance Camp Registration'
 };
